@@ -4,6 +4,7 @@ import NProgress from 'nprogress'
 import Router from 'next/router'
 import 'nprogress/nprogress.css'
 import React from 'react'
+import { isAuth, logout } from '../helpers/auth'
 
 Router.onRouteChangeStart = url => NProgress.start()
 Router.onRouteChangeComplete = url => NProgress.done()
@@ -33,16 +34,49 @@ const Layout = ({ children }) => {
                     Home
                 </Link>
             </li>
-            <li className="nav-item">
-                <Link className="nav-link text-dark" href="/login">
-                    Login
-                </Link>
-            </li>
-            <li className="nav-item">
-                <Link className="nav-link text-dark" href="/register">
-                    Register
-                </Link>
-            </li>
+            {
+                !isAuth() && (
+                    <React.Fragment>
+                        <li className="nav-item">
+                            <Link className="nav-link text-dark" href="/login">
+                                Login
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link text-dark" href="/register">
+                                Register
+                            </Link>
+                        </li>
+                    </React.Fragment>
+                )
+            }
+            {
+                isAuth() && isAuth().role == 'admin' && (
+                    <li className="nav-item ml-auto">
+                        <Link className="nav-link text-dark" href="/admin">
+                        {isAuth().name}
+                        </Link>
+                    </li>
+                )
+            }
+            {
+                isAuth() && isAuth().role == 'subscriber' && (
+                    <li className="nav-item ml-auto">
+                        <Link className="nav-link text-dark" href="/user">
+                            {isAuth().name}
+                        </Link>
+                    </li>
+                )
+            }
+            {
+                isAuth() && (
+                    <li className="nav-item">
+                        <a onClick={logout} className="nav-link text-dark">
+                            Logout
+                        </a>
+                    </li>
+                )
+            }
         </ul>
         )
     }

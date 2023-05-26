@@ -28,13 +28,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    salt: String,
+    salt: {
+        type: String
+    },
     role: {
         type: String,
         default: 'subscriber'
     },
     resetPasswordLink: {
-        data: String,
+        type: String,
         default: ''
     }
 }, {timestamps: true})
