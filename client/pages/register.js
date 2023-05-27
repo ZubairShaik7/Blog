@@ -1,5 +1,5 @@
 import Layout from '../components/Layout'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { showSuccessMessage, showErrorMessage } from '../helpers/alerts'
 import { API } from '../config'

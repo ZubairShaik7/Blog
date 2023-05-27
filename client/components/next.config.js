@@ -7,5 +7,6 @@ module.exports = withCSS({
         PRODUCTION: false,
         DOMAIN: 'http://localhost:3000',
         FB_APP_ID: 'KMSSDJKSHD'
-    }
+    },
+    reactStrictMode: true
 })
