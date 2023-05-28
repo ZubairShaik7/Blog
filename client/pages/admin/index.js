@@ -1,9 +1,27 @@
 import Layout from "../../components/Layout"
 import axios from "axios"
+import Link from "next/link"
 
 const Admin = () => {
     return (
-        <Layout>Admin page</Layout>
+        <Layout>
+            <h1>Admin Dashboard</h1>
+            <br />
+            <div className="row">
+                <div className="col-md-4">
+                    <ul className="nav flex-column">
+                        <li className="nav-item">
+                            <Link className="nav-link" href="/admin/category/create">
+                                Create Category
+                            </Link>
+                        </li>
+                    </ul>
+                </div>
+                <div className="col-md-8">
+
+                </div>
+            </div>
+        </Layout>
     )
 }
 
@@ -20,9 +38,7 @@ export async function getServerSideProps(context) {
             })
             user = response.data
         } catch(error) {
-            if (error.response.status == 401) {
-                user = null
-            }
+            user = null
         }
     }
     if (user == null) {
