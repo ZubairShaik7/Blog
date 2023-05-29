@@ -25,7 +25,7 @@ const Links = ({ slug, category, links, totalLinks, linksLimit, linkSkip  }) => 
         console.log(links)
         return links.map((l, i) => {
             return (
-                <div className="row alert alert-primary p-2">
+                <div key={i} className="row alert alert-primary p-2">
                     <div className="col-md-8" onClick={e => handleClick(l._id)}>
                         <a href={l.url} target="_blank">
                             <h5 className="pt-2">{l.title}</h5>
@@ -47,7 +47,7 @@ const Links = ({ slug, category, links, totalLinks, linksLimit, linkSkip  }) => 
                             {l.type} / {l.medium}
                         </span>
                         {l.categories.map((c, i) => (
-                            <span className="badge text-success">{c.name}</span>
+                            <span key={i} className="badge text-success">{c.name}</span>
                         ))}
                     </div>
                 </div>
@@ -102,14 +102,13 @@ const Links = ({ slug, category, links, totalLinks, linksLimit, linkSkip  }) => 
                 {loadMoreButton()}
             </div> */}
             <div className='row'>
-                <div className='col-md-12 text-center'>
+                <div className='col-md-12'>
                     <InfiniteScroll
                         pageStart={0}
                         loadMore={loadMore}
                         hasMore={size > 0 && size >= limit}
-                        loader={<img src='/static/images/loading.gif' alt='loading'/>}
+                        loader={<img key={0} src='/static/images/loading.gif' alt='loading'/>}
                     >
-
                     </InfiniteScroll>
                 </div>
             </div>
