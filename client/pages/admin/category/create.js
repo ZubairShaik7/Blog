@@ -81,7 +81,6 @@ const Create = ({ user, token }) => {
             console.log(error.response)
             setState({...state, name: '', buttonText: 'Create', error: error.response.data.error})
         }
-
     }
 
     const createCategoryForm = () => {

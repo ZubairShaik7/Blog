@@ -6,7 +6,7 @@ const Home = ({ categories }) => {
     const listCategories = () => {
         return (categories.map((c, i) => {
                 return (
-                    <Link href="/" className='bg-light p-3 col-md-4' style={{border: '1px solid red'}}>
+                    <Link href={`/links/${c.slug}`} className='bg-light p-3 col-md-4' style={{border: '1px solid red'}}>
                         <div>
                             <div className="row">
                                 <div className="col-md-4">
