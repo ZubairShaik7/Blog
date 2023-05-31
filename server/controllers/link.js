@@ -19,14 +19,23 @@ exports.create = (req, res) => {
 }
 
 exports.list = (req, res) => {
-    Link.find({}).exec((err, data) => {
-        if (err) {
-            return res.status(400).json({
-                error: 'Could not find links'
-            })
-        }
-        res.json(data)
-    })
+    let limiT = req.body.limit ? parseInt(req.body.limit) : 10
+    let skiP = req.body.skip ? parseInt(req.body.skip) : 0
+
+    Link.find({})
+        .populate('postedBy', 'name')
+        .populate('categories', 'name slug')
+        .sort({ createdAt: -1})
+        .skip(skiP)
+        .limit(limiT)
+        .exec((err, data) => {
+            if (err) {
+                return res.status(400).json({
+                    error: 'Could not find links'
+                })
+            }
+            res.json(data)
+        })
 }
 
 exports.read = (req, res) => {
