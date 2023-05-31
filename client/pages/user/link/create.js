@@ -188,10 +188,11 @@ const Create = ({ user, token }) => {
 
 export async function getServerSideProps(context) {
     const token = context.req.cookies.token
+    console.log(token)
     let user = null
     if (token) {
         try {
-            const response = await axios.get(`http://localhost:8000/api/admin`, {
+            const response = await axios.get(`http://localhost:8000/api/user`, {
                 headers: {
                     authorization: `Bearer ${token}`,
                     contentType: 'application/json'

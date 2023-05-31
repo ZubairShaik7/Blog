@@ -2,7 +2,7 @@ import Layout from "../../components/Layout"
 import axios from "axios"
 import Link from "next/link"
 
-const Admin = () => {
+const Admin = ({ user, token, userLinks }) => {
     return (
         <Layout>
             <h1>Admin Dashboard</h1>
@@ -33,6 +33,7 @@ const Admin = () => {
 export async function getServerSideProps(context) {
     const token = context.req.cookies.token
     let user = null
+    let userLinks = []
     if (token) {
         try {
             const response = await axios.get(`http://localhost:8000/api/admin`, {
@@ -41,7 +42,8 @@ export async function getServerSideProps(context) {
                     contentType: 'application/json'
                 }
             })
-            user = response.data
+            user = response.data.user
+            userLinks = response.data.links
         } catch(error) {
             user = null
         }
@@ -55,7 +57,8 @@ export async function getServerSideProps(context) {
         return {
             props: {
                 user,
-                token
+                token,
+                userLinks
             }
         }
     }
