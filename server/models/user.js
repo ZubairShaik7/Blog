@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const crypto = require('crypto')
+const { ObjectId } = mongoose.Schema
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -38,7 +39,10 @@ const userSchema = new mongoose.Schema({
     resetPasswordLink: {
         type: String,
         default: ''
-    }
+    },
+    categories: [{
+        type: ObjectId, ref: 'Category', required: true
+    }]
 }, {timestamps: true})
 
 userSchema.virtual('password')

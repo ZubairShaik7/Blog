@@ -1,5 +1,17 @@
 const Link = require('../models/link')
 const slugify = require('slugify')
+const User = require('../models/user')
+const Category = require('../models/category')
+const { linkPublishedParams } = require('../helpers/email')
+const AWS = require('aws-sdk')
+
+AWS.config.update({
+    accessKeyID: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION
+})
+
+const ses = new AWS.SES({ apiVersion: '2010-12-01' })
 
 exports.create = (req, res) => {
     const { title, url, categories, type, medium  } = req.body
@@ -15,6 +27,33 @@ exports.create = (req, res) => {
             })
         }
         res.json(data)
+
+        User.find({categories: {$in: categories}}).exec((err, users) => {
+            if (err) {
+                console.log('Error finding users to send email on link publish')
+                throw new Error(rr)
+            }
+            Category.find({_id: {$in: categories}}).exec((err, result) => {
+                if (err) {
+                    console.log(err)
+                }
+                data.categories = result
+                for (let i = 0; i < users.length; i++) {
+                    const params = linkPublishedParams(users[i].email, data)
+                    const sendEmail = ses.sendEmail(params).promise()
+                    sendEmail
+                        .then(success => {
+                            console.log('Email submitted to SES', success)
+                            return
+                        })
+                        .catch(failure => {
+                            console.log('error on email submitted to SES', failure)
+                            return
+                        })
+                }
+            })
+        })
+        
     })
 }
 
