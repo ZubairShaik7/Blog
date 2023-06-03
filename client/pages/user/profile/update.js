@@ -2,7 +2,7 @@ import Layout from '../../../components/Layout'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { showSuccessMessage, showErrorMessage } from '../../../helpers/alerts'
-import { isAuth } from '../../../helpers/auth'
+import { isAuth, updateUser } from '../../../helpers/auth'
 import Router from 'next/router'
 
 const Profile = ({ user, token }) => {
@@ -69,10 +69,12 @@ const Profile = ({ user, token }) => {
                 }
             })
             console.log(response)
-            setState({
-                ...state,
-                buttonText: 'Updated',
-                success: 'Profile Updated Successfully'
+            updateUser(response.data, () => {
+                setState({
+                    ...state,
+                    buttonText: 'Updated',
+                    success: 'Profile Updated Successfully'
+                })
             })
         } catch (error) {
             setState({...state, buttonText: 'Update', error: error.response.data.message})
